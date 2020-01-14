@@ -14,15 +14,22 @@ class CategoryViewController: UIViewController {
     lazy var categoryTableView = UITableView()
     
     private let categoryCellID = "categoryCellID"
-    
+    private let categoryListKey = "categoryListKey"
+
     var categoryList: [String] = []
-    
+    let store = UserDefaults.standard
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setupNavigation()
         setupContraints()
+        setupData()
         setupCategoryTableView()
+    }
+    
+    func setupData() {
+        categoryList += UserDefaults.standard.array(forKey: categoryListKey) as! [String]
     }
     
     func setupNavigation() {
@@ -48,6 +55,8 @@ class CategoryViewController: UIViewController {
             // insert first
             self.categoryList.insert(todo, at: 0)
             self.categoryTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .left)
+            // save todo
+            self.store.set(self.categoryList, forKey: self.categoryListKey)
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { action in
             
