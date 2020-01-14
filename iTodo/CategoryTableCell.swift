@@ -19,9 +19,14 @@ class CategoryTableCell: UITableViewCell {
         $0.font = UIFont.boldSystemFont(ofSize: 16)
     }
     
-    var title: String? {
+    var todo: Todo! {
         didSet {
-            categoryTitle.text = title ?? "no task"
+            categoryTitle.text = todo.title
+            if todo.done {
+                accessoryType = .checkmark
+            } else {
+                accessoryType = .none
+            }
         }
     }
     
@@ -38,10 +43,12 @@ class CategoryTableCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-        if self.accessoryType == .checkmark {
+        if todo.done {
             categoryTitle.textColor = .systemGreen
+            accessoryType = .checkmark
         } else {
             categoryTitle.textColor = .darkGray
+            accessoryType = .none
         }
     }
 

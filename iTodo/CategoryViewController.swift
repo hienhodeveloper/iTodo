@@ -16,7 +16,7 @@ class CategoryViewController: UIViewController {
     private let categoryCellID = "categoryCellID"
     private let categoryListKey = "categoryListKey"
 
-    var categoryList: [String] = []
+    var categoryList: [Todo] = []
     let store = UserDefaults.standard
 
     override func viewDidLoad() {
@@ -29,7 +29,9 @@ class CategoryViewController: UIViewController {
     }
     
     func setupData() {
-        categoryList += UserDefaults.standard.array(forKey: categoryListKey) as! [String]
+        guard let todo = store.array(forKey: categoryListKey) as? [Todo] else { return }
+        categoryList += todo
+
     }
     
     func setupNavigation() {
@@ -53,7 +55,7 @@ class CategoryViewController: UIViewController {
             guard let self = self, let todo = todoTextField.text else { return }
             guard todo.trimmingCharacters(in: .whitespacesAndNewlines).count > 0 else { return }
             // insert first
-            self.categoryList.insert(todo, at: 0)
+            self.categoryList.insert(Todo(title:todo), at: 0)
             self.categoryTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .left)
             // save todo
             self.store.set(self.categoryList, forKey: self.categoryListKey)
@@ -110,18 +112,14 @@ extension CategoryViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: categoryCellID, for: indexPath) as! CategoryTableCell
-        cell.title = categoryList[indexPath.row]
+        cell.todo = categoryList[indexPath.row]
         return cell
     }
 }
 
 extension CategoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if tableView.cellForRow(at: indexPath)?.accessoryType == UITableViewCell.AccessoryType.none {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        } else {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .none
-        }
+        categoryList[indexPath.row].done = !categoryList[indexPath.row].done
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
