@@ -18,7 +18,8 @@ class CategoryViewController: UIViewController {
 
     var categoryList: [Todo] = []
     let store = UserDefaults.standard
-
+    let dataFilePath = FileManager.default.urls(for: .documentationDirectory, in: .userDomainMask).first?.appendingPathComponent("CategoryList")
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -73,6 +74,16 @@ class CategoryViewController: UIViewController {
         alert.addAction(action)
         alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
+    }
+    
+    func saveTodo() {
+        let encoder = PropertyListEncoder()
+        do {
+            let data = try encoder.encode(categoryList)
+            try data.write(to: dataFilePath!)
+        } catch {
+            
+        }
     }
 }
 // MARK: Setup UI
