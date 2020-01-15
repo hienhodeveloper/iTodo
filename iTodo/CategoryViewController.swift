@@ -14,11 +14,8 @@ class CategoryViewController: UIViewController {
     lazy var categoryTableView = UITableView()
     
     private let categoryCellID = "categoryCellID"
-    private let categoryListKey = "categoryList.plist"
 
-    var categoryList: [Todo] = []
-    let store = UserDefaults.standard
-    var dataFilePath: URL!
+    private var storeViewModel = StoreTodoEntityViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,8 +27,8 @@ class CategoryViewController: UIViewController {
     }
     
     func setupData() {
-        dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(categoryListKey)
-        loadTodo()
+        
+        storeViewModel.loadTodo()
     }
     
     func setupNavigation() {
@@ -55,10 +52,9 @@ class CategoryViewController: UIViewController {
             guard let self = self, let todo = todoTextField.text else { return }
             guard todo.trimmingCharacters(in: .whitespacesAndNewlines).count > 0 else { return }
             // insert first
-            self.categoryList.insert(Todo(title:todo), at: 0)
+            self.storeViewModel.title = todo
+            self.storeViewModel.insertTodo()
             self.categoryTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .left)
-            // save todo
-            self.saveTodo()
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { action in
             
@@ -73,27 +69,6 @@ class CategoryViewController: UIViewController {
         alert.addAction(action)
         alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
-    }
-    
-    func saveTodo() {
-        let encoder = PropertyListEncoder()
-        do {
-            let data = try encoder.encode(categoryList)
-            try data.write(to: dataFilePath!)
-            print("saved")
-        } catch {
-             print("error: \(error)")
-        }
-    }
-    
-    func loadTodo() {
-        guard let data = try? Data(contentsOf: dataFilePath) else { return }
-        let decoder = PropertyListDecoder()
-        do {
-            categoryList = try decoder.decode([Todo].self, from: data)
-        } catch {
-            print("error decode to get data\(error)")
-        }
     }
 }
 // MARK: Setup UI
@@ -128,20 +103,33 @@ extension CategoryViewController {
 
 extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categoryList.count
+        return storeViewModel.categoryList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: categoryCellID, for: indexPath) as! CategoryTableCell
-        cell.todo = categoryList[indexPath.row]
+        cell.todo = storeViewModel.categoryList[indexPath.row]
+        print("cell init \(indexPath.row)")
         return cell
     }
 }
 
 extension CategoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        categoryList[indexPath.row].done = !categoryList[indexPath.row].done
-        saveTodo()
+        storeViewModel.categoryList[indexPath.row].setValue(!storeViewModel.categoryList[indexPath.row].done, forKey: "done")
+        storeViewModel.saveTodo()
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let delete = UIContextualAction(style: .destructive, title: "Delete") { [weak self](action, sourceView, completionHandler) in
+            self?.storeViewModel.removeTodo(at: indexPath)
+            tableView.deleteRows(at: [indexPath], with: .left)
+            completionHandler(true)
+        }
+        //let swipeActionConfig = UISwipeActionsConfiguration(actions: [rename, delete])
+        let swipeActionConfig = UISwipeActionsConfiguration(actions: [delete])
+        swipeActionConfig.performsFirstActionWithFullSwipe = false
+        return swipeActionConfig
     }
 }

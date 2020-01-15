@@ -19,9 +19,9 @@ class CategoryTableCell: UITableViewCell {
         $0.font = UIFont.boldSystemFont(ofSize: 16)
     }
     
-    var todo: Todo! {
+    var todo: TodoEntity! {
         didSet {
-            categoryTitle.text = todo.title
+            categoryTitle.text = todo.title ?? ""
             if todo.done {
                 accessoryType = .checkmark
             } else {
@@ -64,7 +64,7 @@ class CategoryTableCell: UITableViewCell {
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
             make.top.equalToSuperview().offset(8)
-            make.bottom.equalToSuperview().offset(-8)
+            make.bottom.equalToSuperview().offset(-8).priority(.low)
         }
     }
     
