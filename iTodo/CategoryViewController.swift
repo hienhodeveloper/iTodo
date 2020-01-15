@@ -14,11 +14,11 @@ class CategoryViewController: UIViewController {
     lazy var categoryTableView = UITableView()
     
     private let categoryCellID = "categoryCellID"
-    private let categoryListKey = "categoryListKey"
+    private let categoryListKey = "categoryList.plist"
 
     var categoryList: [Todo] = []
     let store = UserDefaults.standard
-    let dataFilePath = FileManager.default.urls(for: .documentationDirectory, in: .userDomainMask).first?.appendingPathComponent("CategoryList")
+    var dataFilePath: URL!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,9 +30,8 @@ class CategoryViewController: UIViewController {
     }
     
     func setupData() {
-        guard let todo = store.array(forKey: categoryListKey) as? [Todo] else { return }
-        categoryList += todo
-
+        dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(categoryListKey)
+        loadTodo()
     }
     
     func setupNavigation() {
@@ -59,7 +58,7 @@ class CategoryViewController: UIViewController {
             self.categoryList.insert(Todo(title:todo), at: 0)
             self.categoryTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .left)
             // save todo
-            self.store.set(self.categoryList, forKey: self.categoryListKey)
+            self.saveTodo()
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { action in
             
@@ -81,8 +80,19 @@ class CategoryViewController: UIViewController {
         do {
             let data = try encoder.encode(categoryList)
             try data.write(to: dataFilePath!)
+            print("saved")
         } catch {
-            
+             print("error: \(error)")
+        }
+    }
+    
+    func loadTodo() {
+        guard let data = try? Data(contentsOf: dataFilePath) else { return }
+        let decoder = PropertyListDecoder()
+        do {
+            categoryList = try decoder.decode([Todo].self, from: data)
+        } catch {
+            print("error decode to get data\(error)")
         }
     }
 }
@@ -131,6 +141,7 @@ extension CategoryViewController: UITableViewDataSource {
 extension CategoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         categoryList[indexPath.row].done = !categoryList[indexPath.row].done
+        saveTodo()
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
