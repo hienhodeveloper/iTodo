@@ -12,9 +12,10 @@ import SnapKit
 class CategoryViewController: UIViewController {
     lazy var container = UIView()
     lazy var categoryTableView = UITableView()
+    var searchController = UISearchController(searchResultsController: nil)
     
     private let categoryCellID = "categoryCellID"
-
+    
     private var storeViewModel = StoreTodoEntityViewModel()
     
     override func viewDidLoad() {
@@ -41,6 +42,8 @@ class CategoryViewController: UIViewController {
         
         // large title
         self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationItem.searchController = searchController
+        searchController.searchBar.delegate = self
     }
     
     // MARK: Actions
@@ -127,9 +130,51 @@ extension CategoryViewController: UITableViewDelegate {
             tableView.deleteRows(at: [indexPath], with: .left)
             completionHandler(true)
         }
-        //let swipeActionConfig = UISwipeActionsConfiguration(actions: [rename, delete])
-        let swipeActionConfig = UISwipeActionsConfiguration(actions: [delete])
+        let rename = UIContextualAction(style: .normal, title: "Edit") { [weak self](action, sourceView, completionHandler) in
+            self?.updateTodo(index: indexPath)
+            completionHandler(true)
+        }
+        let swipeActionConfig = UISwipeActionsConfiguration(actions: [rename, delete])
+        //let swipeActionConfig = UISwipeActionsConfiguration(actions: [delete])
         swipeActionConfig.performsFirstActionWithFullSwipe = false
         return swipeActionConfig
+    }
+    
+    func updateTodo(index: IndexPath) {
+        let todo = storeViewModel.categoryList[index.row]
+        let alert = UIAlertController(title: "Edit todo", message: "", preferredStyle: .alert)
+        var todoTextField: UITextField!
+        
+        let action = UIAlertAction(title: "Save", style: .default) { [weak self] action in
+            guard let self = self, let td = todoTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else { return }
+            guard td.count > 0, todo.title != td else { return }
+            // insert first
+            todo.title = td
+            self.storeViewModel.saveTodo()
+            self.categoryTableView.reloadRows(at: [index], with: .fade)
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { action in
+            
+        }
+        alert.addTextField {
+            alertTextField in
+            todoTextField = alertTextField
+            todoTextField.text = todo.title
+            todoTextField.placeholder = "todo title"
+        }
+        
+        alert.addAction(action)
+        alert.addAction(cancel)
+        present(alert, animated: true, completion: nil)
+    }
+}
+
+extension CategoryViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        let text = (searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines)) ?? ""
+        storeViewModel.search(for: text) {
+            categoryTableView.reloadData()
+        }
     }
 }

@@ -194,7 +194,7 @@
 				52E6196A23CD56C90068C626 /* Sources */,
 				52E6196B23CD56C90068C626 /* Frameworks */,
 				52E6196C23CD56C90068C626 /* Resources */,
-				F1A204AD089F4FB595D787EA /* [CP] Embed Pods Frameworks */,
+				151E61F9B04A521133D21E1F /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -232,7 +232,7 @@
 				52E6198B23CD56CD0068C626 /* Sources */,
 				52E6198C23CD56CD0068C626 /* Frameworks */,
 				52E6198D23CD56CD0068C626 /* Resources */,
-				0C0D5DD6DC571C8754B01574 /* [CP] Embed Pods Frameworks */,
+				CD03CACA6966A7136088322A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -314,21 +314,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0C0D5DD6DC571C8754B01574 /* [CP] Embed Pods Frameworks */ = {
+		151E61F9B04A521133D21E1F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iTodo-iTodoUITests/Pods-iTodo-iTodoUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-iTodo/Pods-iTodo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iTodo-iTodoUITests/Pods-iTodo-iTodoUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-iTodo/Pods-iTodo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iTodo-iTodoUITests/Pods-iTodo-iTodoUITests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iTodo/Pods-iTodo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		29DB234CBDDD405EAC9117BF /* [CP] Check Pods Manifest.lock */ = {
@@ -375,6 +375,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		CD03CACA6966A7136088322A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-iTodo-iTodoUITests/Pods-iTodo-iTodoUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-iTodo-iTodoUITests/Pods-iTodo-iTodoUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iTodo-iTodoUITests/Pods-iTodo-iTodoUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		DBED4BF1FF8B2193534A5C8B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -395,23 +412,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F1A204AD089F4FB595D787EA /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iTodo/Pods-iTodo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iTodo/Pods-iTodo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iTodo/Pods-iTodo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -595,6 +595,7 @@
 			baseConfigurationReference = 7B4F15B635FBECF7735F7B77 /* Pods-iTodo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B9C7RXV7S2;
 				INFOPLIST_FILE = iTodo/Info.plist;
@@ -604,6 +605,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = HienHo.iTodo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -614,6 +616,7 @@
 			baseConfigurationReference = F11EC0EE2E1DAF9866DD22BF /* Pods-iTodo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B9C7RXV7S2;
 				INFOPLIST_FILE = iTodo/Info.plist;
@@ -623,6 +626,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = HienHo.iTodo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

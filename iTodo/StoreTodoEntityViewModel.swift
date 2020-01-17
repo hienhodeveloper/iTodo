@@ -31,6 +31,7 @@ class StoreTodoEntityViewModel {
     func loadTodo() {
         let request: NSFetchRequest<TodoEntity> = TodoEntity.fetchRequest()
         do {
+            categoryList.removeAll()
             categoryList = try context.fetch(request).reversed()
             print("Load success")
         } catch {
@@ -50,6 +51,26 @@ class StoreTodoEntityViewModel {
         context.delete(categoryList[index.row])
         saveTodo()
         categoryList.remove(at: index.row)
+    }
+    
+    func search(for text: String, completion: () -> Void) {
+        if text.count == 0 {
+            loadTodo()
+            completion()
+            return
+        }
+        
+        let request: NSFetchRequest<TodoEntity> = TodoEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", text)
+        let sortDescription = NSSortDescriptor(key: "title", ascending: true)
+        request.sortDescriptors = [sortDescription]
+        
+        do {
+            categoryList = try context.fetch(request)
+            completion()
+        } catch {
+            print("Search - error: \(error)")
+        }
     }
 }
 
