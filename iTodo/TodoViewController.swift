@@ -9,12 +9,12 @@
 import UIKit
 import SnapKit
 
-class CategoryViewController: UIViewController {
+class TodoViewController: UIViewController {
     lazy var container = UIView()
-    lazy var categoryTableView = UITableView()
+    lazy var todoTableView = UITableView()
     var searchController = UISearchController(searchResultsController: nil)
     
-    private let categoryCellID = "categoryCellID"
+    private let todoCellID = "todoCellID"
     
     private var storeViewModel = StoreTodoEntityViewModel()
     
@@ -34,7 +34,7 @@ class CategoryViewController: UIViewController {
     
     func setupNavigation() {
         // add bar button
-        let addBarButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(CategoryViewController.addTodo(_:)))
+        let addBarButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(TodoViewController.addTodo(_:)))
         self.navigationItem.rightBarButtonItem = addBarButton
         
         // title
@@ -57,7 +57,7 @@ class CategoryViewController: UIViewController {
             // insert first
             self.storeViewModel.title = todo
             self.storeViewModel.insertTodo()
-            self.categoryTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .left)
+            self.todoTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .left)
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { action in
             
@@ -75,18 +75,18 @@ class CategoryViewController: UIViewController {
     }
 }
 // MARK: Setup UI
-extension CategoryViewController {
+extension TodoViewController {
     func setupContraints() {
         // add subviews
         view.addSubview(container)
-        container.addSubview(categoryTableView)
+        container.addSubview(todoTableView)
         
         // setup contraint
         container.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
-        categoryTableView.snp.makeConstraints { make in
+        todoTableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
@@ -94,32 +94,32 @@ extension CategoryViewController {
 }
 
 // MARK: Setup tableView
-extension CategoryViewController {
+extension TodoViewController {
     func setupCategoryTableView() {
-        categoryTableView.delegate = self
-        categoryTableView.dataSource = self
-        categoryTableView.rowHeight = UITableView.automaticDimension
-        categoryTableView.estimatedRowHeight = 44
-        categoryTableView.register(CategoryTableCell.self, forCellReuseIdentifier: categoryCellID)
+        todoTableView.delegate = self
+        todoTableView.dataSource = self
+        todoTableView.rowHeight = UITableView.automaticDimension
+        todoTableView.estimatedRowHeight = 44
+        todoTableView.register(CategoryTableCell.self, forCellReuseIdentifier: todoCellID)
     }
 }
 
-extension CategoryViewController: UITableViewDataSource {
+extension TodoViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return storeViewModel.categoryList.count
+        return storeViewModel.todoList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: categoryCellID, for: indexPath) as! CategoryTableCell
-        cell.todo = storeViewModel.categoryList[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: todoCellID, for: indexPath) as! CategoryTableCell
+        cell.todo = storeViewModel.todoList[indexPath.row]
         print("cell init \(indexPath.row)")
         return cell
     }
 }
 
-extension CategoryViewController: UITableViewDelegate {
+extension TodoViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        storeViewModel.categoryList[indexPath.row].setValue(!storeViewModel.categoryList[indexPath.row].done, forKey: "done")
+        storeViewModel.todoList[indexPath.row].setValue(!storeViewModel.todoList[indexPath.row].done, forKey: "done")
         storeViewModel.saveTodo()
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -141,7 +141,7 @@ extension CategoryViewController: UITableViewDelegate {
     }
     
     func updateTodo(index: IndexPath) {
-        let todo = storeViewModel.categoryList[index.row]
+        let todo = storeViewModel.todoList[index.row]
         let alert = UIAlertController(title: "Edit todo", message: "", preferredStyle: .alert)
         var todoTextField: UITextField!
         
@@ -151,7 +151,7 @@ extension CategoryViewController: UITableViewDelegate {
             // insert first
             todo.title = td
             self.storeViewModel.saveTodo()
-            self.categoryTableView.reloadRows(at: [index], with: .fade)
+            self.todoTableView.reloadRows(at: [index], with: .fade)
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { action in
             
@@ -169,12 +169,12 @@ extension CategoryViewController: UITableViewDelegate {
     }
 }
 
-extension CategoryViewController: UISearchBarDelegate {
+extension TodoViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         let text = (searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines)) ?? ""
         storeViewModel.search(for: text) {
-            categoryTableView.reloadData()
+            todoTableView.reloadData()
         }
     }
 }

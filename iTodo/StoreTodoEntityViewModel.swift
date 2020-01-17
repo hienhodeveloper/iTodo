@@ -9,13 +9,13 @@ import UIKit
 import CoreData
 
 class StoreTodoEntityViewModel {
-    var categoryList: [TodoEntity]!
+    var todoList: [TodoEntity]!
     let context: NSManagedObjectContext!
     
     var title: String = ""
     
     init() {
-        categoryList = []
+        todoList = []
         context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
     }
     
@@ -31,8 +31,8 @@ class StoreTodoEntityViewModel {
     func loadTodo() {
         let request: NSFetchRequest<TodoEntity> = TodoEntity.fetchRequest()
         do {
-            categoryList.removeAll()
-            categoryList = try context.fetch(request).reversed()
+            todoList.removeAll()
+            todoList = try context.fetch(request).reversed()
             print("Load success")
         } catch {
             print("Load error: \(error)")
@@ -43,14 +43,14 @@ class StoreTodoEntityViewModel {
         let todo = TodoEntity(context: context)
         todo.title = title
         todo.done = false
-        categoryList.insert(todo, at: 0)
+        todoList.insert(todo, at: 0)
         saveTodo()
     }
     
     func removeTodo(at index: IndexPath) {
-        context.delete(categoryList[index.row])
+        context.delete(todoList[index.row])
         saveTodo()
-        categoryList.remove(at: index.row)
+        todoList.remove(at: index.row)
     }
     
     func search(for text: String, completion: () -> Void) {
@@ -66,7 +66,7 @@ class StoreTodoEntityViewModel {
         request.sortDescriptors = [sortDescription]
         
         do {
-            categoryList = try context.fetch(request)
+            todoList = try context.fetch(request)
             completion()
         } catch {
             print("Search - error: \(error)")

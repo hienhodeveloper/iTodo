@@ -9,7 +9,7 @@
 import Foundation
 
 class StoreTodoViewModel {
-    private let categoryListKey = "categoryList.plist"
+    private let categoryListKey = "todoList.plist"
 
     var categoryList: [Todo] = []
     let store = UserDefaults.standard
