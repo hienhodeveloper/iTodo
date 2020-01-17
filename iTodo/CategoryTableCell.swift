@@ -19,14 +19,14 @@ class CategoryTableCell: UITableViewCell {
         $0.font = UIFont.boldSystemFont(ofSize: 16)
     }
     
-    var todo: TodoEntity! {
+    var category: CategoryEntity! {
         didSet {
-            categoryTitle.text = todo.title ?? ""
-            if todo.done {
-                accessoryType = .checkmark
-            } else {
-                accessoryType = .none
-            }
+            categoryTitle.text = category.name ?? ""
+//            if todo.done {
+//                accessoryType = .checkmark
+//            } else {
+//                accessoryType = .none
+//            }
         }
     }
     
@@ -43,13 +43,13 @@ class CategoryTableCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-        if todo.done {
-            categoryTitle.textColor = .systemGreen
-            accessoryType = .checkmark
-        } else {
-            categoryTitle.textColor = .darkGray
-            accessoryType = .none
-        }
+//        if todo.done {
+//            categoryTitle.textColor = .systemGreen
+//            accessoryType = .checkmark
+//        } else {
+//            categoryTitle.textColor = .darkGray
+//            accessoryType = .none
+//        }
     }
 
     func setupUI() {

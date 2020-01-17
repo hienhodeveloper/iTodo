@@ -14,7 +14,7 @@ class StoreTodoViewModel {
     var categoryList: [Todo] = []
     let store = UserDefaults.standard
     var dataFilePath: URL!
-    
+        
     init() {
         dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(categoryListKey)
     }

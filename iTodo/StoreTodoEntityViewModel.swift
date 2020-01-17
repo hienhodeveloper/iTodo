@@ -12,6 +12,8 @@ class StoreTodoEntityViewModel {
     var todoList: [TodoEntity]!
     let context: NSManagedObjectContext!
     
+    var category: CategoryEntity?
+
     var title: String = ""
     
     init() {
@@ -28,12 +30,16 @@ class StoreTodoEntityViewModel {
         }
     }
     
-    func loadTodo() {
-        let request: NSFetchRequest<TodoEntity> = TodoEntity.fetchRequest()
+    func loadTodo(with request: NSFetchRequest<TodoEntity> = TodoEntity.fetchRequest(), completion: (()->Void)? = nil) {
+        let predicate = NSPredicate(format: "parentCategory.name MATCHES %@", category!.name!)
+        let lastPredicaete = request.predicate
+        let predicateList = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, lastPredicaete].compactMap{$0})
+        request.predicate = predicateList
         do {
             todoList.removeAll()
             todoList = try context.fetch(request).reversed()
             print("Load success")
+            completion?()
         } catch {
             print("Load error: \(error)")
         }
@@ -43,6 +49,7 @@ class StoreTodoEntityViewModel {
         let todo = TodoEntity(context: context)
         todo.title = title
         todo.done = false
+        todo.parentCategory = category
         todoList.insert(todo, at: 0)
         saveTodo()
     }
@@ -53,7 +60,7 @@ class StoreTodoEntityViewModel {
         todoList.remove(at: index.row)
     }
     
-    func search(for text: String, completion: () -> Void) {
+    func search(for text: String, completion: @escaping () -> Void) {
         if text.count == 0 {
             loadTodo()
             completion()
@@ -65,11 +72,8 @@ class StoreTodoEntityViewModel {
         let sortDescription = NSSortDescriptor(key: "title", ascending: true)
         request.sortDescriptors = [sortDescription]
         
-        do {
-            todoList = try context.fetch(request)
+        loadTodo(with: request) {
             completion()
-        } catch {
-            print("Search - error: \(error)")
         }
     }
 }

@@ -2,12 +2,12 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="19B88" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CategoryEntity" representedClassName=".CategoryEntity" syncable="YES" codeGenerationType="class">
         <attribute name="name" attributeType="String"/>
-        <relationship name="parentCategory" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TodoEntity" inverseName="childTodo" inverseEntity="TodoEntity"/>
+        <relationship name="childTodo" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TodoEntity" inverseName="parentCategory" inverseEntity="TodoEntity"/>
     </entity>
     <entity name="TodoEntity" representedClassName=".TodoEntity" syncable="YES" codeGenerationType="class">
         <attribute name="done" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="title" attributeType="String"/>
-        <relationship name="childTodo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CategoryEntity" inverseName="parentCategory" inverseEntity="CategoryEntity"/>
+        <relationship name="parentCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CategoryEntity" inverseName="childTodo" inverseEntity="CategoryEntity"/>
     </entity>
     <elements>
         <element name="TodoEntity" positionX="-45" positionY="0" width="128" height="88"/>

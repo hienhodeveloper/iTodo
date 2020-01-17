@@ -16,7 +16,7 @@ class CategoryViewController: UIViewController {
     
     private let categoryCellID = "categoryCellID"
     
-    private var storeViewModel = StoreTodoEntityViewModel()
+    private var storeViewModel = StoreCategoryEntityViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +29,7 @@ class CategoryViewController: UIViewController {
     
     func setupData() {
         
-        storeViewModel.loadTodo()
+        storeViewModel.loadCategory()
     }
     
     func setupNavigation() {
@@ -106,12 +106,12 @@ extension CategoryViewController {
 
 extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return storeViewModel.todoList.count
+        return storeViewModel.categoryList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: categoryCellID, for: indexPath) as! CategoryTableCell
-        cell.todo = storeViewModel.todoList[indexPath.row]
+        cell.category = storeViewModel.categoryList[indexPath.row]
         print("cell init \(indexPath.row)")
         return cell
     }
@@ -121,6 +121,8 @@ extension CategoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let todoViewController = TodoViewController()
+        todoViewController.storeViewModel = StoreTodoEntityViewModel()
+        todoViewController.storeViewModel.category = storeViewModel.categoryList[indexPath.row]
         navigationController?.pushViewController(todoViewController, animated: true)
         
     }
@@ -142,16 +144,16 @@ extension CategoryViewController: UITableViewDelegate {
     }
     
     func updateTodo(index: IndexPath) {
-        let todo = storeViewModel.todoList[index.row]
+        let todo = storeViewModel.categoryList[index.row]
         let alert = UIAlertController(title: "Edit todo", message: "", preferredStyle: .alert)
         var todoTextField: UITextField!
         
         let action = UIAlertAction(title: "Save", style: .default) { [weak self] action in
             guard let self = self, let td = todoTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else { return }
-            guard td.count > 0, todo.title != td else { return }
+            guard td.count > 0, todo.name != td else { return }
             // insert first
-            todo.title = td
-            self.storeViewModel.saveTodo()
+            todo.name = td
+            self.storeViewModel.saveCategory()
             self.categoryTableView.reloadRows(at: [index], with: .fade)
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { action in
@@ -160,7 +162,7 @@ extension CategoryViewController: UITableViewDelegate {
         alert.addTextField {
             alertTextField in
             todoTextField = alertTextField
-            todoTextField.text = todo.title
+            todoTextField.text = todo.name
             todoTextField.placeholder = "todo title"
         }
         

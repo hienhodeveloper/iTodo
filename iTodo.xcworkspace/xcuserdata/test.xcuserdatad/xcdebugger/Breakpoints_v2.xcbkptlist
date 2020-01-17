@@ -46,9 +46,9 @@
             filePath = "iTodo/StoreTodoEntityViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
-            landmarkName = "search(for:completion:)"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "removeTodo(at:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -62,9 +62,9 @@
             filePath = "iTodo/StoreTodoEntityViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "59"
-            endingLineNumber = "59"
-            landmarkName = "search(for:completion:)"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
+            landmarkName = "removeTodo(at:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -79,7 +79,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "183"
-            endingLineNumber = "183">
+            endingLineNumber = "183"
+            landmarkName = "CategoryViewController"
+            landmarkType = "21">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -92,9 +94,9 @@
             filePath = "iTodo/StoreTodoEntityViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "57"
-            endingLineNumber = "57"
-            landmarkName = "search(for:completion:)"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "removeTodo(at:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

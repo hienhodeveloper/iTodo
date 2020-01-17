@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0705D9E87D33F2398F89B399 /* Pods_iTodo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F54ECA71A91205446376F8E /* Pods_iTodo.framework */; };
 		5236283D23D18D0C00EBA857 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5236283C23D18D0C00EBA857 /* CategoryViewController.swift */; };
+		5236283F23D18F8100EBA857 /* StoreCategoryEntityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5236283E23D18F8100EBA857 /* StoreCategoryEntityViewModel.swift */; };
+		5236284123D191E300EBA857 /* TodoTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5236284023D191E300EBA857 /* TodoTableCell.swift */; };
 		526A39BE23CDBCBD002331F5 /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 526A39BD23CDBCBD002331F5 /* Todo.swift */; };
 		52B36EDB23CEC8A40053F8EB /* AppDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 52B36ED923CEC8A40053F8EB /* AppDataModel.xcdatamodeld */; };
 		52B36EDD23CEEAB90053F8EB /* StoreTodoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B36EDC23CEEAB90053F8EB /* StoreTodoViewModel.swift */; };
@@ -49,6 +51,8 @@
 		2170CCAB6B55AA5C0E07B35E /* Pods-iTodo-iTodoUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iTodo-iTodoUITests.release.xcconfig"; path = "Target Support Files/Pods-iTodo-iTodoUITests/Pods-iTodo-iTodoUITests.release.xcconfig"; sourceTree = "<group>"; };
 		3EBD69199CDD1FEFF2609B61 /* Pods-iTodoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iTodoTests.release.xcconfig"; path = "Target Support Files/Pods-iTodoTests/Pods-iTodoTests.release.xcconfig"; sourceTree = "<group>"; };
 		5236283C23D18D0C00EBA857 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
+		5236283E23D18F8100EBA857 /* StoreCategoryEntityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCategoryEntityViewModel.swift; sourceTree = "<group>"; };
+		5236284023D191E300EBA857 /* TodoTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTableCell.swift; sourceTree = "<group>"; };
 		526A39BD23CDBCBD002331F5 /* Todo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
 		52B36EDA23CEC8A40053F8EB /* AppDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppDataModel.xcdatamodel; sourceTree = "<group>"; };
 		52B36EDC23CEEAB90053F8EB /* StoreTodoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreTodoViewModel.swift; sourceTree = "<group>"; };
@@ -141,6 +145,8 @@
 				52B36EDC23CEEAB90053F8EB /* StoreTodoViewModel.swift */,
 				52B36EDE23CEEBF00053F8EB /* StoreTodoEntityViewModel.swift */,
 				5236283C23D18D0C00EBA857 /* CategoryViewController.swift */,
+				5236283E23D18F8100EBA857 /* StoreCategoryEntityViewModel.swift */,
+				5236284023D191E300EBA857 /* TodoTableCell.swift */,
 			);
 			path = iTodo;
 			sourceTree = "<group>";
@@ -428,9 +434,11 @@
 				52B36EDF23CEEBF00053F8EB /* StoreTodoEntityViewModel.swift in Sources */,
 				52E619A423CD5EC00068C626 /* StaticMethod.swift in Sources */,
 				526A39BE23CDBCBD002331F5 /* Todo.swift in Sources */,
+				5236283F23D18F8100EBA857 /* StoreCategoryEntityViewModel.swift in Sources */,
 				52B36EDD23CEEAB90053F8EB /* StoreTodoViewModel.swift in Sources */,
 				52E619A223CD5BCF0068C626 /* CategoryTableCell.swift in Sources */,
 				52E6197623CD56C90068C626 /* TodoViewController.swift in Sources */,
+				5236284123D191E300EBA857 /* TodoTableCell.swift in Sources */,
 				52B36EDB23CEC8A40053F8EB /* AppDataModel.xcdatamodeld in Sources */,
 				52E6197223CD56C90068C626 /* AppDelegate.swift in Sources */,
 				52E6197423CD56C90068C626 /* SceneDelegate.swift in Sources */,

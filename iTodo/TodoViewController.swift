@@ -13,10 +13,11 @@ class TodoViewController: UIViewController {
     lazy var container = UIView()
     lazy var todoTableView = UITableView()
     var searchController = UISearchController(searchResultsController: nil)
+    var selectCategory: CategoryEntity?
     
     private let todoCellID = "categoryCellID"
     
-    private var storeViewModel = StoreTodoEntityViewModel()
+    var storeViewModel: StoreTodoEntityViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +25,7 @@ class TodoViewController: UIViewController {
         setupNavigation()
         setupContraints()
         setupData()
-        setupCategoryTableView()
+        setupTodoTableView()
     }
     
     func setupData() {
@@ -38,11 +39,12 @@ class TodoViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = addBarButton
         
         // title
-        title = "TODO"
+        title = storeViewModel.category?.name ?? "TODO"
         
         // large title
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.searchController = searchController
+        self.navigationItem.hidesSearchBarWhenScrolling = false
         searchController.searchBar.delegate = self
     }
     
@@ -95,12 +97,12 @@ extension TodoViewController {
 
 // MARK: Setup tableView
 extension TodoViewController {
-    func setupCategoryTableView() {
+    func setupTodoTableView() {
         todoTableView.delegate = self
         todoTableView.dataSource = self
         todoTableView.rowHeight = UITableView.automaticDimension
         todoTableView.estimatedRowHeight = 44
-        todoTableView.register(CategoryTableCell.self, forCellReuseIdentifier: todoCellID)
+        todoTableView.register(TodoTableCell.self, forCellReuseIdentifier: todoCellID)
     }
 }
 
@@ -110,7 +112,7 @@ extension TodoViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: todoCellID, for: indexPath) as! CategoryTableCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: todoCellID, for: indexPath) as! TodoTableCell
         cell.todo = storeViewModel.todoList[indexPath.row]
         print("cell init \(indexPath.row)")
         return cell
@@ -174,7 +176,7 @@ extension TodoViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         let text = (searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines)) ?? ""
         storeViewModel.search(for: text) {
-            todoTableView.reloadData()
+            self.todoTableView.reloadData()
         }
     }
 }
