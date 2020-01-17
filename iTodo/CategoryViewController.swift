@@ -1,20 +1,20 @@
 //
-//  ViewController.swift
+//  CategoryViewController.swift
 //  iTodo
 //
-//  Created by Hien Ho on 1/14/20.
-//  Copyright © 2020 TeamLuna. All rights reserved.tableView.cellForRow(at: indexPath)?.accessoryType
+//  Created by Hien Ho on 1/17/20.
+//  Copyright © 2020 TeamLuna. All rights reserved.
 //
 
 import UIKit
 import SnapKit
 
-class TodoViewController: UIViewController {
+class CategoryViewController: UIViewController {
     lazy var container = UIView()
-    lazy var todoTableView = UITableView()
+    lazy var categoryTableView = UITableView()
     var searchController = UISearchController(searchResultsController: nil)
     
-    private let todoCellID = "categoryCellID"
+    private let categoryCellID = "categoryCellID"
     
     private var storeViewModel = StoreTodoEntityViewModel()
     
@@ -34,11 +34,11 @@ class TodoViewController: UIViewController {
     
     func setupNavigation() {
         // add bar button
-        let addBarButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(TodoViewController.addTodo(_:)))
+        let addBarButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(CategoryViewController.addCategory(_:)))
         self.navigationItem.rightBarButtonItem = addBarButton
         
         // title
-        title = "TODO"
+        title = "Category"
         
         // large title
         self.navigationController?.navigationBar.prefersLargeTitles = true
@@ -47,25 +47,25 @@ class TodoViewController: UIViewController {
     }
     
     // MARK: Actions
-    @objc func addTodo(_ sender: UIButton) {
-        let alert = UIAlertController(title: "Add a todo", message: "", preferredStyle: .alert)
-        var todoTextField: UITextField!
+    @objc func addCategory(_ sender: UIButton) {
+        let alert = UIAlertController(title: "Add a category", message: "", preferredStyle: .alert)
+        var categoryTextField: UITextField!
         
         let action = UIAlertAction(title: "Add", style: .default) { [weak self] action in
-            guard let self = self, let todo = todoTextField.text else { return }
+            guard let self = self, let todo = categoryTextField.text else { return }
             guard todo.trimmingCharacters(in: .whitespacesAndNewlines).count > 0 else { return }
             // insert first
             self.storeViewModel.title = todo
             self.storeViewModel.insertTodo()
-            self.todoTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .left)
+            self.categoryTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .left)
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { action in
             
         }
         alert.addTextField {
             alertTextField in
-            todoTextField = alertTextField
-            todoTextField.placeholder = "todo title"
+            categoryTextField = alertTextField
+            categoryTextField.placeholder = "category title"
             
         }
         
@@ -75,18 +75,18 @@ class TodoViewController: UIViewController {
     }
 }
 // MARK: Setup UI
-extension TodoViewController {
+extension CategoryViewController {
     func setupContraints() {
         // add subviews
         view.addSubview(container)
-        container.addSubview(todoTableView)
+        container.addSubview(categoryTableView)
         
         // setup contraint
         container.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
-        todoTableView.snp.makeConstraints { make in
+        categoryTableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
@@ -94,34 +94,35 @@ extension TodoViewController {
 }
 
 // MARK: Setup tableView
-extension TodoViewController {
+extension CategoryViewController {
     func setupCategoryTableView() {
-        todoTableView.delegate = self
-        todoTableView.dataSource = self
-        todoTableView.rowHeight = UITableView.automaticDimension
-        todoTableView.estimatedRowHeight = 44
-        todoTableView.register(CategoryTableCell.self, forCellReuseIdentifier: todoCellID)
+        categoryTableView.delegate = self
+        categoryTableView.dataSource = self
+        categoryTableView.rowHeight = UITableView.automaticDimension
+        categoryTableView.estimatedRowHeight = 44
+        categoryTableView.register(CategoryTableCell.self, forCellReuseIdentifier: categoryCellID)
     }
 }
 
-extension TodoViewController: UITableViewDataSource {
+extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return storeViewModel.todoList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: todoCellID, for: indexPath) as! CategoryTableCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: categoryCellID, for: indexPath) as! CategoryTableCell
         cell.todo = storeViewModel.todoList[indexPath.row]
         print("cell init \(indexPath.row)")
         return cell
     }
 }
 
-extension TodoViewController: UITableViewDelegate {
+extension CategoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        storeViewModel.todoList[indexPath.row].setValue(!storeViewModel.todoList[indexPath.row].done, forKey: "done")
-        storeViewModel.saveTodo()
         tableView.deselectRow(at: indexPath, animated: true)
+        let todoViewController = TodoViewController()
+        navigationController?.pushViewController(todoViewController, animated: true)
+        
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -151,7 +152,7 @@ extension TodoViewController: UITableViewDelegate {
             // insert first
             todo.title = td
             self.storeViewModel.saveTodo()
-            self.todoTableView.reloadRows(at: [index], with: .fade)
+            self.categoryTableView.reloadRows(at: [index], with: .fade)
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { action in
             
@@ -169,12 +170,13 @@ extension TodoViewController: UITableViewDelegate {
     }
 }
 
-extension TodoViewController: UISearchBarDelegate {
+extension CategoryViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         let text = (searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines)) ?? ""
         storeViewModel.search(for: text) {
-            todoTableView.reloadData()
+            categoryTableView.reloadData()
         }
     }
 }
+
